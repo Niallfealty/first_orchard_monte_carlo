@@ -28,19 +28,27 @@ def get_args():
     '''
     try:
         num_trials = int(argv[1])
-    except IndexError:
-        num_trials = DEFAULT_NUM_TRIALS
-    except ValueError:
-        if argv[1] in ["-h", "--help"]:
-            usage(0)
-        else:
-            print("[!] Invalid argument: please see help for instructions.")
-            usage(1)
-
-    try:
         params = parse_params(argv[2])
-    except:
-        params = False
+    except IndexError:
+        try:
+            num_trials = int(argv[1])
+            params = False
+        except IndexError:
+            num_trials = DEFAULT_NUM_TRIALS
+            params = False
+    except ValueError:
+        try:
+            num_trials = DEFAULT_NUM_TRIALS
+            params = parse_params(argv[1])
+        except:
+            print(e)
+            params = False
+            if argv[1] in ["-h", "--help"]:
+                usage(0)
+            else:
+                print("[!] Invalid argument: please see help for instructions.")
+                usage(1)
+
 
     return num_trials, params
 
